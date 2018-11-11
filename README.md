@@ -13,6 +13,23 @@ http://research.microsoft.com/en-us/projects/surfacerecon/
 
 KFusion is mainly written in CUDA with some interface code to display graphics output.
 
+# 算法解析
+    首次实现基于 RGB-D 的实时三位重建
+    
+    步骤：
+    1. 2D深度图(双边滤波+三角变换(需要相机内参数))转换成3D点云，并计算 没一个3D点的法向量
+    2. ICP算法迭代求当前帧2相机位姿
+       a. 对每个像素点用投影算法计算匹配点。
+       b. 最小化匹配点重投影点坐标误差到 平面的距离
+       迭代
+    3. 根据相机位姿将点云融合到全局三维模型(TSDF模型，3d网格)中
+       网格中的数值代表距离重建场景表面的距离，网格中从正值到负值的穿越点连接线表示重建的表面
+    4. 光线投影算法求当前视角下能够看到的场景表面
+
+
+    https://www.rosclub.cn/post-227.html
+
+
 Requirements
 ------------
 
